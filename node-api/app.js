@@ -2,8 +2,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 
 var port = process.env.PORT || 3000;
+var secret = 'supersecretysecretsecret';
 mongoose.connect('mongodb://localhost:27017/node-api');
 var User = require('./app/models/user');
 
@@ -28,13 +30,68 @@ app.get('/', function(req, res) {
 
 var apiRouter = new express.Router();
 
-apiRouter.use(function(req, res, next) {
-  console.log('Somebody just came to our app!');
-  next();
-});
-
 apiRouter.get('/', function(req, res) {
   res.json({message: 'Welcome to the API!'});
+});
+
+apiRouter.post('/authenticate', function(req, res) {
+  User.findOne({
+    username: req.body.username
+  }).select('name username password').exec(function(err, user) {
+    if (err) {
+      throw err;
+    }
+    if (user) {
+      var validPassword = user.comparePassword(req.body.password);
+      if (validPassword) {
+        var token = jwt.sign({
+          name: user.name,
+          username: user.username
+        }, secret, {
+          expiresIn: '24h'
+        });
+
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      } else {
+        res.json({
+          success: false,
+          message: 'Authentication failed. Wrong password.'
+        });
+      }
+    } else {
+      res.json({
+        sucess: false,
+        message: 'Authentication failed. User not found.'
+      });
+    }
+  });
+});
+
+apiRouter.use(function(req, res, next) {
+  var token = req.body.token ||
+    req.query.token ||
+    req.headers['x-access-token'];
+  if (token) {
+    jwt.verify(token, secret, function(err, decoded) {
+      if (err) {
+        return res.status(403).json({
+          success: false,
+          message: 'Failed to authenticate token'
+        });
+      }
+      req.decoded = decoded;
+      next();
+    });
+  } else {
+    res.status(403).json({
+      success: false,
+      message: 'No token provided'
+    });
+  }
 });
 
 apiRouter.route('/users')
@@ -109,6 +166,11 @@ apiRouter.route('/users/:user_id')
       res.json({message: 'Successfully deleted'});
     });
   });
+
+apiRouter.get('/me', function(req, res) {
+  res.send(req.decoded);
+});
+
 app.use('/api', apiRouter);
 
 app.listen(port);
