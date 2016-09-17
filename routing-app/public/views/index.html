@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My Routing App</title>
+    <base href="/">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <style>
+      body {
+        padding-top: 50px;
+      }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/app.routes.js"></script>
+  </head>
+  <body ng-app="routerApp" ng-controller="mainCtrl as main" class="container">
+    <header>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+              Angular Routing Example
+            </a>
+          </div>
+
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+            <li><a href="/about"><i class="fa fa-shield"></i> About</a></li>
+            <li><a href="/contact"><i class="fa fa-comment"></i> Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <ng-view></ng-view>
+    </main>
+  </body>
+</html>
