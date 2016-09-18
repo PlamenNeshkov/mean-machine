@@ -1,0 +1,20 @@
+body {
+  padding-top: 50px;
+}
+
+#content-views {
+  position: relative;
+}
+
+.ng-enter, .ng-leave {
+  position: absolute;
+  width: 100%;
+}
+
+.ng-enter {
+  animation: fadeInDown 1.2s;
+}
+
+.ng-leave {
+  animation: fadeOutDown 0.5s;
+}

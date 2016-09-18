@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var app = angular.module('routerApp', ['routerRoutes']);
+  var app = angular.module('routerApp', ['routerRoutes', 'ngAnimate']);
 
   app.controller('mainCtrl', function() {
     var vm = this;
