@@ -1,0 +1,11 @@
+main {
+  padding-top: 30px;
+}
+
+header .navbar {
+  border-radius: 0;
+}
+
+.ng-hide-remove {
+  animation: zoomIn 0.3s both ease;
+}

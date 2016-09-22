@@ -18,7 +18,7 @@
       };
 
       userFactory.update = function(id, userData) {
-        return $http.post('/api/users/' + id, userData);
+        return $http.put('/api/users/' + id, userData);
       };
 
       userFactory.delete = function(id) {

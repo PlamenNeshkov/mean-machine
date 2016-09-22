@@ -42,7 +42,7 @@ var router = function() {
         }
       } else {
         res.json({
-          sucess: false,
+          success: false,
           message: 'Authentication failed. User not found.'
         });
       }
@@ -148,6 +148,8 @@ var router = function() {
   apiRouter.get('/me', function(req, res) {
     res.send(req.decoded);
   });
+
+  return apiRouter;
 };
 
 module.exports = router;

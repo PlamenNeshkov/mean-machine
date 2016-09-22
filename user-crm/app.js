@@ -9,6 +9,7 @@ mongoose.connect(config.database);
 
 var app = express();
 
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
@@ -22,7 +23,7 @@ app.use(function(req, res, next) {
 
 app.use(morgan('dev'));
 
-var apiRoutes = require('./app/routes/api');
+var apiRoutes = require('./app/routes/api')();
 app.use('/api', apiRoutes);
 
 app.get('*', function(req, res) {

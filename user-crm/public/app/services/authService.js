@@ -10,9 +10,9 @@
           username: username,
           password: password
         })
-          .then(function(data) {
-            AuthToken.set(data.token);
-            return data;
+          .then(function(response) {
+            AuthToken.set(response.data.token);
+            return response;
           });
       };
 
@@ -29,7 +29,7 @@
 
       authFactory.getUser = function() {
         if (AuthToken.get()) {
-          return $http.get('/api/me');
+          return $http.get('/api/me', {cache: true});
         }
         return $q.reject({message: 'User has no token.'});
       };
